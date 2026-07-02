@@ -5,15 +5,15 @@
  * Version : 1.0
  * Build   : 001
  *
- * Configuration Defaults
+ * System Configuration
  *
  * Designed and created by
  * Jenerwin Camba
  *
  ******************************************************************************/
 
-#ifndef PMS_CONFIG_H
-#define PMS_CONFIG_H
+#ifndef PMS_CORE_CONFIG_H
+#define PMS_CORE_CONFIG_H
 
 #include <Arduino.h>
 
@@ -22,136 +22,146 @@
 #include "Pins.h"
 #include "Types.h"
 
-namespace PMS::Config
+namespace PMS
 {
 
-//======================================================================
+//==========================================================
 // Machine
-//======================================================================
+//==========================================================
 
-inline constexpr char DEFAULT_MACHINE_NAME[] =
-    "PMS-001";
-
-//======================================================================
-// WiFi
-//======================================================================
-
-inline constexpr char DEFAULT_AP_SSID[] =
-    "PreventiveMaintenanceScheduler";
-
-inline constexpr char DEFAULT_AP_PASSWORD[] =
-    "";
-
-inline constexpr bool DEFAULT_AP_PASSWORD_ENABLED =
-    false;
-
-//======================================================================
-// Display
-//======================================================================
-
-inline constexpr TimeFormat DEFAULT_TIME_FORMAT =
-    TimeFormat::Hour24;
-
-//======================================================================
-// Outputs
-//======================================================================
-
-inline constexpr OutputMode DEFAULT_OUTPUT_MODE =
-    OutputMode::ActiveHigh;
-
-//======================================================================
-// GPIO Factory Assignment
-//
-// NOTE:
-// Pin assignments are configurable from the Settings page.
-// These values are only used during the first boot or after
-// a factory reset.
-//======================================================================
-
-inline constexpr GPIOConfiguration DEFAULT_GPIO =
+struct MachineConfig
 {
-    // PM Output
-    {
-        Pins::PM_OUTPUT,
-        DEFAULT_OUTPUT_MODE
-    },
+    char name[Constants::MACHINE_NAME_LENGTH];
 
-    // EE Output
-    {
-        Pins::EE_OUTPUT,
-        DEFAULT_OUTPUT_MODE
-    },
+    TimeFormat timeFormat;
 
-    // Other Output
-    {
-        Pins::OTHER_OUTPUT,
-        DEFAULT_OUTPUT_MODE
-    },
-
-    // Common Output
-    {
-        Pins::COMMON_OUTPUT,
-        DEFAULT_OUTPUT_MODE
-    },
-
-    // Alarm / Buzzer Output
-    {
-        Pins::ALARM_OUTPUT,
-        DEFAULT_OUTPUT_MODE
-    },
-
-    // Alarm Reset Button
-    Pins::RESET_BUTTON,
-
-    // WiFi Wake Button
-    Pins::WIFI_BUTTON
+    bool wifiPasswordEnabled;
 };
 
-//======================================================================
+//==========================================================
+// WiFi
+//==========================================================
+
+struct WiFiConfig
+{
+    char ssid[32];
+
+    char password[Constants::WIFI_PASSWORD_LENGTH];
+
+    uint16_t accessPointTimeoutMinutes;
+};
+
+//==========================================================
 // Alarm
-//======================================================================
+//==========================================================
 
-inline constexpr AlarmConfig DEFAULT_ALARM =
+struct AlarmConfig
 {
-    Constants::DEFAULT_ALARM_ON_SECONDS,
-    Constants::DEFAULT_ALARM_OFF_SECONDS
+    float onTimeSeconds;
+
+    float offTimeSeconds;
 };
 
-//======================================================================
-// WiFi
-//======================================================================
+//==========================================================
+// GPIO
+//==========================================================
 
-inline constexpr WiFiConfig DEFAULT_WIFI =
+struct GPIOConfig
 {
-    Constants::DEFAULT_AP_TIMEOUT_MINUTES
+    OutputPin pmOutput;
+
+    OutputPin eeOutput;
+
+    OutputPin otherOutput;
+
+    OutputPin commonOutput;
+
+    OutputPin alarmOutput;
+
+    uint8_t resetButton;
+
+    uint8_t wifiButton;
 };
 
-//======================================================================
-// Machine
-//======================================================================
+//==========================================================
+// Configuration Header
+//==========================================================
 
-inline constexpr MachineConfig DEFAULT_MACHINE =
+struct ConfigurationHeader
 {
-    DEFAULT_MACHINE_NAME,
+    uint16_t version;
 
-    DEFAULT_AP_PASSWORD,
-
-    DEFAULT_AP_PASSWORD_ENABLED,
-
-    DEFAULT_TIME_FORMAT
+    uint16_t size;
 };
 
-//======================================================================
-// System Configuration Header
-//======================================================================
+//==========================================================
+// Complete System Configuration
+//==========================================================
 
-inline constexpr ConfigurationHeader DEFAULT_HEADER =
+struct SystemConfig
 {
-    Constants::CONFIG_VERSION,
+    ConfigurationHeader header;
 
-    sizeof(SystemConfig)
+    MachineConfig machine;
+
+    WiFiConfig wifi;
+
+    AlarmConfig alarm;
+
+    GPIOConfig gpio;
 };
 
-} // namespace PMS::Config
+//==========================================================
+// Factory Defaults
+//==========================================================
+
+namespace Factory
+{
+    inline constexpr char MACHINE_NAME[] = "PMS-001";
+
+    inline constexpr char AP_SSID[] = "PreventiveMaintenanceScheduler";
+
+    inline constexpr char AP_PASSWORD[] = "";
+
+    inline constexpr MachineConfig MACHINE =
+    {
+        "PMS-001",
+        TimeFormat::Hour24,
+        false
+    };
+
+    inline constexpr WiFiConfig WIFI =
+    {
+        "PreventiveMaintenanceScheduler",
+        "",
+        Constants::DEFAULT_AP_TIMEOUT_MIN
+    };
+
+    inline constexpr AlarmConfig ALARM =
+    {
+        Constants::DEFAULT_ON_TIME,
+        Constants::DEFAULT_OFF_TIME
+    };
+
+    inline constexpr GPIOConfig GPIO =
+    {
+        { Pins::PM_OUTPUT,     OutputMode::ActiveHigh },
+        { Pins::EE_OUTPUT,     OutputMode::ActiveHigh },
+        { Pins::OTHER_OUTPUT,  OutputMode::ActiveHigh },
+        { Pins::COMMON_OUTPUT, OutputMode::ActiveHigh },
+        { Pins::ALARM_OUTPUT,  OutputMode::ActiveHigh },
+
+        Pins::RESET_BUTTON,
+        Pins::WIFI_BUTTON
+    };
+
+    inline constexpr ConfigurationHeader HEADER =
+    {
+        Constants::CONFIG_VERSION,
+        sizeof(SystemConfig)
+    };
+}
+
+} // namespace PMS
 
 #endif
