@@ -53,7 +53,7 @@ namespace PMS::BuildInfo
     inline constexpr char RTC[] =
         "DS3231";
 
-    inline constexpr char DISPLAY[] =
+    inline constexpr char DISPLAY_TYPE[] =
         "16x2 I2C LCD";
 
     //==============================================================

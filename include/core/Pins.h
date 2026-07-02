@@ -26,8 +26,8 @@ namespace PMS::Pins
     // These are the Arduino pin numbers used by Wire.
     //=========================================================
 
-    inline constexpr uint8_t SDA = SDA;
-    inline constexpr uint8_t SCL = SCL;
+    inline constexpr uint8_t I2C_SDA = SDA;
+    inline constexpr uint8_t I2C_SCL = SCL;
 
     //=========================================================
     // Digital Outputs
