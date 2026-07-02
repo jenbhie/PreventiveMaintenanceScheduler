@@ -12,70 +12,77 @@
  *
  ******************************************************************************/
 
-#ifndef PMS_APPLICATION_STATE_H
-#define PMS_APPLICATION_STATE_H
+#ifndef PMS_MODEL_APPLICATION_STATE_H
+#define PMS_MODEL_APPLICATION_STATE_H
 
-#include "../core/Types.h"
+#include "../core/Config.h"
 
 namespace PMS
 {
 
-//======================================================================
-// Runtime State
-//======================================================================
+//==========================================================
+// RTC Runtime
+//==========================================================
 
 struct RTCState
 {
-    DateTime currentTime;
+    DateTime currentDateTime {};
+
+    bool present = false;
 
     bool synchronized = false;
-
-    bool rtcPresent = false;
 };
 
-struct AlarmRuntime
-{
-    AlarmState state = AlarmState::Idle;
+//==========================================================
+// Scheduler Runtime
+//==========================================================
 
-    bool outputActive = false;
-
-    bool buzzerActive = false;
-
-    uint32_t lastToggle = 0;
-};
-
-struct WiFiRuntime
-{
-    bool accessPointRunning = false;
-
-    bool clientConnected = false;
-
-    uint8_t connectedClients = 0;
-
-    uint32_t startedAt = 0;
-};
-
-struct SchedulerRuntime
+struct SchedulerState
 {
     Schedule schedules[Constants::MAX_SCHEDULES];
 
-    uint16_t scheduleCount = 0;
+    uint16_t count = 0;
+
+    PreviousPM previousPM {};
 
     int16_t remainingDays = 0;
 
     bool overdue = false;
 };
 
-struct DashboardRuntime
+//==========================================================
+// Alarm Runtime
+//==========================================================
+
+struct AlarmRuntime
 {
-    PreviousPM previousPM;
+    AlarmState state = AlarmState::Idle;
 
-    Schedule nextPM;
+    bool outputState = false;
 
-    Schedule nextEE;
+    bool acknowledged = false;
 
-    Schedule nextOther;
+    uint32_t lastToggle = 0;
 };
+
+//==========================================================
+// WiFi Runtime
+//==========================================================
+
+struct WiFiRuntime
+{
+    bool accessPointEnabled = false;
+
+    bool clientConnected = false;
+
+    uint8_t connectedClients = 0;
+
+    uint32_t startTime = 0;
+};
+
+//==========================================================
+// System Runtime
+//==========================================================
 
 struct SystemRuntime
 {
@@ -83,32 +90,55 @@ struct SystemRuntime
 
     bool configurationLoaded = false;
 
-    bool alarmEnabled = true;
+    bool rtcReady = false;
+
+    bool storageReady = false;
 
     bool rebootRequested = false;
 
     bool factoryResetRequested = false;
 };
 
-//======================================================================
-// Complete Runtime State
-//======================================================================
+//==========================================================
+// Dashboard Runtime
+//==========================================================
+
+struct DashboardRuntime
+{
+    Schedule nextPM {};
+
+    Schedule nextEE {};
+
+    Schedule nextOther {};
+};
+
+//==========================================================
+// Complete Application State
+//==========================================================
 
 struct ApplicationState
 {
-    SystemConfig configuration;
+    //------------------------------------------------------
+    // Persistent Configuration
+    //------------------------------------------------------
 
-    RTCState rtc;
+    SystemConfig configuration {};
 
-    SchedulerRuntime scheduler;
+    //------------------------------------------------------
+    // Runtime
+    //------------------------------------------------------
 
-    AlarmRuntime alarm;
+    RTCState rtc {};
 
-    WiFiRuntime wifi;
+    SchedulerState scheduler {};
 
-    DashboardRuntime dashboard;
+    AlarmRuntime alarm {};
 
-    SystemRuntime system;
+    WiFiRuntime wifi {};
+
+    DashboardRuntime dashboard {};
+
+    SystemRuntime system {};
 };
 
 } // namespace PMS
