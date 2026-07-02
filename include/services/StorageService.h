@@ -12,13 +12,13 @@
  *
  ******************************************************************************/
 
-#ifndef PMS_STORAGE_SERVICE_H
-#define PMS_STORAGE_SERVICE_H
+#ifndef PMS_SERVICES_STORAGE_SERVICE_H
+#define PMS_SERVICES_STORAGE_SERVICE_H
 
 #include <Arduino.h>
 #include <Preferences.h>
 
-#include "../core/Types.h"
+#include "../core/Config.h"
 
 namespace PMS
 {
@@ -28,23 +28,37 @@ class StorageService
 public:
 
     StorageService();
+    ~StorageService();
+
+    //----------------------------------------------------------
+    // Service
+    //----------------------------------------------------------
 
     bool begin();
-
+    void update();
     void end();
 
     bool isReady() const;
 
-    bool loadConfiguration(SystemConfig& configuration);
+    //----------------------------------------------------------
+    // Configuration
+    //----------------------------------------------------------
 
-    bool saveConfiguration(
-        const SystemConfig& configuration);
+    bool loadConfiguration(SystemConfig& config);
 
-    bool loadPreviousPM(
-        PreviousPM& previousPM);
+    bool saveConfiguration(const SystemConfig& config);
 
-    bool savePreviousPM(
-        const PreviousPM& previousPM);
+    //----------------------------------------------------------
+    // Previous PM
+    //----------------------------------------------------------
+
+    bool loadPreviousPM(PreviousPM& previousPM);
+
+    bool savePreviousPM(const PreviousPM& previousPM);
+
+    //----------------------------------------------------------
+    // Schedule Database
+    //----------------------------------------------------------
 
     bool loadSchedules(
         Schedule schedules[],
@@ -56,16 +70,29 @@ public:
 
     bool clearSchedules();
 
+    //----------------------------------------------------------
+    // Maintenance
+    //----------------------------------------------------------
+
     bool factoryReset();
 
 private:
 
-    Preferences _preferences;
+    //----------------------------------------------------------
+    // Database Structures
+    //----------------------------------------------------------
 
-    bool _ready;
-
-    struct PersistentData
+    struct DatabaseHeader
     {
+        uint16_t version;
+        uint16_t size;
+        uint32_t crc;
+    };
+
+    struct PersistentDatabase
+    {
+        DatabaseHeader header;
+
         SystemConfig configuration;
 
         PreviousPM previousPM;
@@ -75,17 +102,33 @@ private:
         Schedule schedules[Constants::MAX_SCHEDULES];
     };
 
-    bool readDatabase(
-        PersistentData& database);
+    //----------------------------------------------------------
+    // Members
+    //----------------------------------------------------------
 
-    bool writeDatabase(
-        const PersistentData& database);
+    Preferences _preferences;
+
+    bool _ready;
+
+    bool _dirty;
+
+    PersistentDatabase _database;
+
+    //----------------------------------------------------------
+    // Internal Helpers
+    //----------------------------------------------------------
+
+    bool readDatabase();
+
+    bool writeDatabase();
+
+    void initializeDatabase();
 
     void createFactoryConfiguration(
-        SystemConfig& configuration);
+        SystemConfig& config);
 
     bool validateConfiguration(
-        const SystemConfig& configuration) const;
+        const SystemConfig& config) const;
 };
 
 }
