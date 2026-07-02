@@ -5,33 +5,33 @@
  * Version : 1.0
  * Build   : 001
  *
- * Common Data Types
+ * Common Types
  *
  * Designed and created by
  * Jenerwin Camba
  *
  ******************************************************************************/
 
-#ifndef PMS_TYPES_H
-#define PMS_TYPES_H
+#ifndef PMS_CORE_TYPES_H
+#define PMS_CORE_TYPES_H
 
 #include <Arduino.h>
 
 namespace PMS
 {
 
-//======================================================================
+//==========================================================
 // Enumerations
-//======================================================================
+//==========================================================
 
 enum class ActivityType : uint8_t
 {
     PM = 0,
     EE,
-    Other
+    OTHER
 };
 
-enum class ScheduleStatus : uint8_t
+enum class ScheduleState : uint8_t
 {
     Pending = 0,
     Active,
@@ -58,98 +58,41 @@ enum class TimeFormat : uint8_t
     Hour12
 };
 
-enum class WiFiMode : uint8_t
-{
-    Disabled = 0,
-    AccessPoint
-};
-
-//======================================================================
-// RTC
-//======================================================================
+//==========================================================
+// Date & Time
+//==========================================================
 
 struct DateTime
 {
     uint16_t year;
+
     uint8_t month;
+
     uint8_t day;
 
     uint8_t hour;
+
     uint8_t minute;
+
     uint8_t second;
 
     uint8_t dayOfWeek;
 };
 
-//======================================================================
-// GPIO
-//======================================================================
+//==========================================================
+// Output Pin
+//==========================================================
 
-struct GPIOPin
+struct OutputPin
 {
     uint8_t pin;
+
     OutputMode mode;
 };
 
-//======================================================================
-// Machine
-//======================================================================
-
-struct MachineConfig
-{
-    char machineName[21];
-
-    char wifiPassword[64];
-
-    bool passwordEnabled;
-
-    TimeFormat timeFormat;
-};
-
-//======================================================================
-// WiFi
-//======================================================================
-
-struct WiFiConfig
-{
-    uint16_t apTimeoutMinutes;
-};
-
-//======================================================================
-// Alarm
-//======================================================================
-
-struct AlarmConfig
-{
-    float onSeconds;
-
-    float offSeconds;
-};
-
-//======================================================================
-// GPIO Configuration
-//======================================================================
-
-struct GPIOConfiguration
-{
-    GPIOPin pmOutput;
-
-    GPIOPin eeOutput;
-
-    GPIOPin otherOutput;
-
-    GPIOPin commonOutput;
-
-    GPIOPin buzzerOutput;
-
-    uint8_t resetButton;
-
-    uint8_t wifiButton;
-};
-
-//======================================================================
+//==========================================================
 // Schedule
-//======================================================================
+//==========================================================
 
 struct Schedule
 {
@@ -159,48 +102,20 @@ struct Schedule
 
     DateTime trigger;
 
-    ScheduleStatus status;
+    ScheduleState state;
 
     char description[64];
 };
 
-//======================================================================
+//==========================================================
 // Previous PM
-//======================================================================
+//==========================================================
 
 struct PreviousPM
 {
     bool valid;
 
     DateTime completed;
-};
-
-//======================================================================
-// Configuration Header
-//======================================================================
-
-struct ConfigurationHeader
-{
-    uint16_t version;
-
-    uint16_t size;
-};
-
-//======================================================================
-// System Configuration
-//======================================================================
-
-struct SystemConfig
-{
-    ConfigurationHeader header;
-
-    MachineConfig machine;
-
-    WiFiConfig wifi;
-
-    AlarmConfig alarm;
-
-    GPIOConfiguration gpio;
 };
 
 } // namespace PMS
