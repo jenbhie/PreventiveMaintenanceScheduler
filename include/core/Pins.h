@@ -5,67 +5,62 @@
  * Version : 1.0
  * Build   : 001
  *
- * Default GPIO Assignment
+ * Default Pin Assignment
  *
  * Designed and created by
  * Jenerwin Camba
  *
  ******************************************************************************/
 
-#ifndef PMS_PINS_H
-#define PMS_PINS_H
+#ifndef PMS_CORE_PINS_H
+#define PMS_CORE_PINS_H
 
 #include <Arduino.h>
 
-namespace Pins
+namespace PMS::Pins
 {
-    //======================================================================
-    // I2C Bus
+    //=========================================================
+    // I2C
     //
-    // Arduino Nano ESP32
-    // Default Wire pins:
-    // SDA = GPIO11
-    // SCL = GPIO12
+    // Official Arduino Nano ESP32
+    // These are the Arduino pin numbers used by Wire.
+    //=========================================================
+
+    inline constexpr uint8_t SDA = SDA;
+    inline constexpr uint8_t SCL = SCL;
+
+    //=========================================================
+    // Digital Outputs
     //
-    // These may be changed in Wire.begin() if required.
-    //======================================================================
+    // Factory defaults.
+    // User configurable in Settings.
+    //=========================================================
 
-    inline constexpr uint8_t I2C_SDA = 11;
-    inline constexpr uint8_t I2C_SCL = 12;
+    inline constexpr uint8_t PM_OUTPUT = D2;
 
-    //======================================================================
-    // Digital Outputs (Factory Defaults)
-    //======================================================================
+    inline constexpr uint8_t EE_OUTPUT = D3;
 
-    inline constexpr uint8_t PM_OUTPUT      = 22;
+    inline constexpr uint8_t OTHER_OUTPUT = D4;
 
-    inline constexpr uint8_t EE_OUTPUT      = 23;
+    inline constexpr uint8_t COMMON_OUTPUT = D5;
 
-    inline constexpr uint8_t OTHER_OUTPUT   = 18;
+    inline constexpr uint8_t ALARM_OUTPUT = D6;
 
-    inline constexpr uint8_t COMMON_OUTPUT  = 19;
+    //=========================================================
+    // Inputs
+    //=========================================================
 
-    inline constexpr uint8_t ALARM_OUTPUT   = 21;
+    inline constexpr uint8_t RESET_BUTTON = D7;
 
-    //======================================================================
-    // Digital Inputs
-    //======================================================================
+    inline constexpr uint8_t WIFI_BUTTON = D8;
 
-    inline constexpr uint8_t RESET_BUTTON   = 16;
-
-    inline constexpr uint8_t WIFI_BUTTON    = 17;
-
-    //======================================================================
+    //=========================================================
     // Reserved
-    //
-    // Available for future expansion.
-    //======================================================================
+    //=========================================================
 
-    inline constexpr uint8_t SPARE1 = 25;
+    inline constexpr uint8_t SPARE1 = D9;
 
-    inline constexpr uint8_t SPARE2 = 26;
-
-    inline constexpr uint8_t SPARE3 = 27;
+    inline constexpr uint8_t SPARE2 = D10;
 }
 
-#endif
+#endif // PMS_CORE_PINS_H
