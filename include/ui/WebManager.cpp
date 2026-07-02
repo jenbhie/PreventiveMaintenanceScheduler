@@ -13,6 +13,7 @@
  ******************************************************************************/
 
 #include "ui/WebManager.h"
+#include "ui/HTMLPage.h"
 
 namespace PMS
 {
@@ -129,22 +130,10 @@ void WebManager::registerRoutes()
 
 void WebManager::handleRoot()
 {
-    static const char page[] PROGMEM =
-        "<!DOCTYPE html>"
-        "<html>"
-        "<head>"
-        "<meta charset='UTF-8'>"
-        "<meta name='viewport' content='width=device-width,initial-scale=1'>"
-        "<title>Preventive Maintenance Scheduler</title>"
-        "</head>"
-        "<body>"
-        "<h2>Preventive Maintenance Scheduler</h2>"
-        "<p>Build001 running successfully.</p>"
-        "<p><a href=\"/status\">View Status</a></p>"
-        "</body>"
-        "</html>";
-
-    _server.send(200, "text/html", page);
+    _server.send_P(
+        200,
+        "text/html",
+        INDEX_HTML);
 }
 
 void WebManager::handleStatus()
