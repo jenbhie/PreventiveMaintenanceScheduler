@@ -12,48 +12,40 @@
  *
  ******************************************************************************/
 
-#ifndef PMS_BUILD_INFO_H
-#define PMS_BUILD_INFO_H
+#ifndef PMS_CORE_BUILDINFO_H
+#define PMS_CORE_BUILDINFO_H
 
 #include <Arduino.h>
 
-namespace BuildInfo
+namespace PMS::BuildInfo
 {
-    //=========================================================
+    //==============================================================
     // Project
-    //=========================================================
+    //==============================================================
 
     inline constexpr char PROJECT_NAME[] =
         "Preventive Maintenance Scheduler";
 
-    inline constexpr char PROJECT_SHORT_NAME[] =
+    inline constexpr char PROJECT_CODE[] =
         "PMS";
 
     inline constexpr char AUTHOR[] =
         "Jenerwin Camba";
 
-    inline constexpr char COPYRIGHT[] =
-        "Designed and created by Jenerwin Camba";
+    inline constexpr char VERSION[] =
+        "1.0.0";
 
-    //=========================================================
-    // Version
-    //=========================================================
+    inline constexpr uint16_t BUILD_NUMBER = 1;
 
-    inline constexpr uint8_t VERSION_MAJOR = 1;
+    //==============================================================
+    // Target Hardware
+    //==============================================================
 
-    inline constexpr uint8_t VERSION_MINOR = 0;
-
-    inline constexpr uint16_t BUILD = 1;
-
-    inline constexpr char VERSION_STRING[] =
-        "1.0.001";
-
-    //=========================================================
-    // Hardware
-    //=========================================================
-
-    inline constexpr char TARGET_BOARD[] =
+    inline constexpr char BOARD[] =
         "Arduino Nano ESP32";
+
+    inline constexpr char MCU[] =
+        "ESP32-S3";
 
     inline constexpr char FRAMEWORK[] =
         "Arduino";
@@ -64,15 +56,13 @@ namespace BuildInfo
     inline constexpr char DISPLAY[] =
         "16x2 I2C LCD";
 
-    //=========================================================
-    // Build
-    //=========================================================
+    //==============================================================
+    // Compiler Information
+    //==============================================================
 
-    inline constexpr char BUILD_DATE[] =
-        __DATE__;
+    inline constexpr char BUILD_DATE[] = __DATE__;
 
-    inline constexpr char BUILD_TIME[] =
-        __TIME__;
+    inline constexpr char BUILD_TIME[] = __TIME__;
 }
 
-#endif
+#endif // PMS_CORE_BUILDINFO_H
