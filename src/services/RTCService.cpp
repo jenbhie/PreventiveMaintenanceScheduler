@@ -69,14 +69,12 @@ bool RTCService::isReady() const
     return _ready;
 }
 
-} // namespace PMS
-
 /*==========================================================
     RTC Interface
 ==========================================================*/
 
 bool RTCService::getDateTime(
-    DateTime& dateTime) const
+    DateTime& dateTime)
 {
     if (!_ready)
     {
@@ -118,7 +116,7 @@ bool RTCService::synchronize()
     return true;
 }
 
-bool RTCService::lostPower() const
+bool RTCService::lostPower()
 {
     if (!_ready)
     {
@@ -132,7 +130,7 @@ bool RTCService::lostPower() const
     Information
 ==========================================================*/
 
-float RTCService::getTemperature() const
+float RTCService::getTemperature()
 {
     if (!_ready)
     {

@@ -47,7 +47,7 @@ public:
     // RTC
     //----------------------------------------------------------
 
-    bool getDateTime(DateTime& dateTime) const;
+    bool getDateTime(DateTime& dateTime);
 
     bool setDateTime(const DateTime& dateTime);
 
@@ -57,9 +57,9 @@ public:
     // Information
     //----------------------------------------------------------
 
-    float getTemperature() const;
+    float getTemperature();
 
-    bool lostPower() const;
+    bool lostPower();
 
 private:
 

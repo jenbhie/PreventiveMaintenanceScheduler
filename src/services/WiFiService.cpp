@@ -13,6 +13,7 @@
  ******************************************************************************/
 
 #include "services/WiFiService.h"
+#include <cstring>
 
 namespace PMS
 {
@@ -90,7 +91,7 @@ bool WiFiService::startAccessPoint(
 
     bool result;
 
-    if (password == nullptr || std::strlen(password) == 0)
+    if (password == nullptr || strlen(password) == 0)
     {
         result = WiFi.softAP(ssid);
     }

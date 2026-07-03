@@ -14,8 +14,8 @@
 
 #include "ui/DisplayManager.h"
 
-#include "../core/BuildInfo.h"
-#include "../core/Constants.h"
+#include "core/BuildInfo.h"
+#include "core/Constants.h"
 
 namespace PMS
 {

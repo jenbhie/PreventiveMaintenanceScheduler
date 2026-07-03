@@ -14,6 +14,7 @@
 
 #include "ui/WebManager.h"
 #include "ui/HTMLPage.h"
+#include <cstdio>
 
 namespace PMS
 {
@@ -91,8 +92,6 @@ void WebManager::setApplicationState(
     _state = state;
 }
 
-} // namespace PMS
-
 /*==========================================================
     Route Registration
 ==========================================================*/
@@ -121,8 +120,6 @@ void WebManager::registerRoutes()
             handleNotFound();
         });
 }
-
-#include <cstdio>
 
 /*==========================================================
     HTTP Handlers
